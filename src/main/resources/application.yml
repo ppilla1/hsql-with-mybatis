@@ -1,0 +1,33 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info,health,metrics,beans,prometheus
+
+datasources:
+        onboarding:
+          poolName: db0-onboarding-pool
+          driverClassName: org.hsqldb.jdbcDriver
+          jdbcUrl: jdbc:hsqldb:mem:db0
+          username: sa
+          password:
+          connectionTestQuery: SELECT 1 FROM INFORMATION_SCHEMA.SYSTEM_USERS
+          validationTimeout: 5000
+          minimumIdle: 5
+          maximumPoolSize: 5
+          idleTimeout: 1800000
+          leakDetectionThreshold: 5000
+          maxLifetime: 0
+        feature:
+          poolName: db1-feature-pool
+          driverClassName: org.hsqldb.jdbcDriver
+          jdbcUrl: jdbc:hsqldb:mem:db1
+          username: sa
+          password:
+          connectionTestQuery: SELECT 1 FROM INFORMATION_SCHEMA.SYSTEM_USERS
+          validationTimeout: 5000
+          minimumIdle: 5
+          maximumPoolSize: 5
+          idleTimeout: 1800000
+          leakDetectionThreshold: 5000
+          maxLifetime: 0

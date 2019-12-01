@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jpmc.feature.repository.FeatureRepository">
+
+    <insert id="addOrUpdate" parameterType="hashmap">
+        MERGE INTO FEATURES F USING (VALUES(#{F_ID},#{EN})) VALS(F_ID, EN)
+            ON F.FEATURE_ID = VALS.F_ID
+        WHEN MATCHED THEN UPDATE SET F.IS_ENABLED = VALS.EN
+        WHEN NOT MATCHED THEN INSERT (FEATURE_ID, IS_ENABLED) VALUES (VALS.F_ID, VALS.EN)
+    </insert>
+
+    <select id="fetch" parameterType="hashmap" resultType="hashmap">
+        SELECT FEATURE_ID, IS_ENABLED
+        FROM FEATURES WHERE FEATURE_ID = #{F_ID}
+    </select>
+</mapper>

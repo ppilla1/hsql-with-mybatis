@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jpmc.feature.repository.TenantRepository">
+
+    <insert id="add" parameterType="hashmap">
+        INSERT INTO TENANTS (TENANT_ID, FEATURE_ID, TENANT_ROLE)
+        VALUES (#{T_ID}, #{F_ID}, #{ROLE});
+    </insert>
+
+    <update id="update" parameterType="hashmap">
+        UPDATE TENANTS
+        SET TENANT_ROLE = #{ROLE}
+        WHERE TENANT_ID = #{T_ID} AND FEATURE_ID = #{F_ID}
+    </update>
+
+    <delete id="delete" parameterType="hashmap">
+        DELETE FROM TENANTS WHERE TENANT_ID = #{T_ID} AND FEATURE_ID = #{F_ID}
+    </delete>
+
+    <select id="fetchAll" parameterType="hashmap" resultType="hashmap">
+        SELECT TENANT_ID, FEATURE_ID, TENANT_ROLE
+        FROM TENANTS
+        WHERE TENANT_ID = #{T_ID}
+    </select>
+
+    <select id="fetchById" parameterType="hashmap" resultType="hashmap">
+        SELECT TENANT_ID, FEATURE_ID, TENANT_ROLE
+        FROM TENANTS
+        WHERE TENANT_ID = #{T_ID} AND FEATURE_ID = #{F_ID}
+    </select>
+</mapper>

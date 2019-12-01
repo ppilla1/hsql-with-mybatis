@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jpmc.onboarding.repository.OnboardingRepository">
+    <insert id="addOrUpdate" parameterType="hashmap">
+        MERGE INTO ONBOARDING_CONFIGURATIONS OBC USING
+            (VALUES(#{F_ID},#{T_ID},#{CONFIG})) VALS(F_ID, T_ID, CONFIG)
+        ON OBC.FEATURE_ID = VALS.F_ID AND OBC.TENANT_ID = VALS.T_ID
+            WHEN MATCHED THEN UPDATE SET OBC.CONFIGURATION = VALS.CONFIG
+            WHEN NOT MATCHED THEN INSERT (FEATURE_ID, TENANT_ID, CONFIGURATION) VALUES (VALS.F_ID, VALS.T_ID, VALS.CONFIG)
+    </insert>
+    <select id="fetch" parameterType="hashmap" resultType="hashmap">
+        SELECT FEATURE_ID, TENANT_ID, CONFIGURATION
+        FROM ONBOARDING_CONFIGURATIONS
+        WHERE FEATURE_ID = #{F_ID} AND TENANT_ID = #{T_ID}
+    </select>
+</mapper>
