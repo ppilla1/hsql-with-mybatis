@@ -16,8 +16,8 @@ public class EmbeddedDbConfig {
 
     @PostConstruct
     public void launchDbConsole(){
-
-        if (System.getenv("SHOW_DB_CONSOLE").equals("true")){
+        String showConsole = System.getenv("SHOW_DB_CONSOLE");
+        if (null != showConsole && showConsole.equals("true")){
 
             DatabaseManagerSwing.main(new String[] { "--url", "jdbc:hsqldb:mem:db0", "--user", "sa", "--password", ""});
             DatabaseManagerSwing.main(new String[] { "--url", "jdbc:hsqldb:mem:db1", "--user", "sa", "--password", ""});
