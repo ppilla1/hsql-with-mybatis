@@ -1,5 +1,6 @@
-package org.jpmc.onboarding.config;
+package org.jpmc.turnstile.io.repository.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.jpmc.config.AbstractMybatisConfig;
 import org.mybatis.spring.annotation.MapperScan;
@@ -8,23 +9,26 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 
 import javax.sql.DataSource;
 
+@Slf4j
 @Configuration
 @MapperScans({
-        @MapperScan(basePackages = {"org.jpmc.onboarding.repository"}, sqlSessionFactoryRef = "db0SqlSessionFactory")
+        @MapperScan(basePackages = {
+                "org.jpmc.turnstile.io.repository"
+        }, sqlSessionFactoryRef = "turnstileSqlSessionFactory")
 })
-public class OnboardingMybatisConfig extends AbstractMybatisConfig {
+public class TurnstileMybatisConfig extends AbstractMybatisConfig {
 
     private final DataSource dataSource;
     private final String mapperLocations;
     private final String typeAliasPackage;
 
-    public OnboardingMybatisConfig(@Qualifier("db0DataSource") DataSource dataSource,
-                                   @Value("${mappers.onboarding:classpath:**/onboarding/repository/*.xml}") String mapperLocations,
-                                   @Value("${typealiaspackage.onboarding:org.jpmc.onboarding}") String typeAliasPackage) {
+    public TurnstileMybatisConfig(
+            @Qualifier("db0DataSource") DataSource dataSource,
+            @Value("${mappers.turnstile:classpath:**/turnstile/io/repository/*.xml}") String mapperLocations,
+            @Value("${typealiaspackage.turnstile:org.jpmc.turnstile.core.model}") String typeAliasPackage) {
         this.dataSource = dataSource;
         this.mapperLocations = mapperLocations;
         this.typeAliasPackage = typeAliasPackage;
@@ -45,10 +49,10 @@ public class OnboardingMybatisConfig extends AbstractMybatisConfig {
         return typeAliasPackage;
     }
 
-    @Primary
-    @Bean("db0SqlSessionFactory")
+    @Bean("turnstileSqlSessionFactory")
     @Override
     public SqlSessionFactory sqlSessionFactory() throws Exception {
+        SqlSessionFactory sqlSessionFactory = createSqlSessionFactory();
         return createSqlSessionFactory();
     }
 }

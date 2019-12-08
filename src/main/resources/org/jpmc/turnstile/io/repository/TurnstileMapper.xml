@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jpmc.turnstile.io.repository.TurnstileRepository">
+
+    <resultMap id="turnstile" type="org.jpmc.turnstile.core.model.Turnstile">
+        <result property="id" column="ID" jdbcType="VARCHAR"/>
+        <result property="tenantId" column="TENANT_ID" jdbcType="VARCHAR"/>
+        <result property="tenantDescription" column="TENANT_DESCRIPTION" jdbcType="NUMERIC"/>
+        <result property="locationLatitude" column="LOCATION_LATITUDE" jdbcType="NUMERIC"/>
+        <result property="locationLongitude" column="LOCATION_LONGITUDE" jdbcType="VARCHAR"/>
+        <result property="state" column="STATE" typeHandler="org.jpmc.turnstile.io.repository.config.TurnstileSingleCoinStateTypeHandler"/>
+    </resultMap>
+
+
+    <insert id="create" parameterType="turnstile">
+        INSERT INTO TURNSTILES(ID, TENANT_ID, TENANT_DESCRIPTION, LOCATION_LATITUDE, LOCATION_LONGITUDE, STATE)
+        VALUES (#{TURNSTILE.id}, #{TURNSTILE.tenantId}, #{TURNSTILE.tenantDescription}, #{TURNSTILE.locationLatitude}, #{TURNSTILE.locationLongitude}, #{TURNSTILE.state})
+    </insert>
+
+    <update id="update" parameterType="turnstile">
+        UPDATE TURNSTILES
+        SET TENANT_DESCRIPTION = #{TURNSTILE.tenantDescription}, LOCATION_LATITUDE = #{TURNSTILE.locationLatitude}, LOCATION_LONGITUDE = #{TURNSTILE.locationLongitude}, STATE = #{TURNSTILE.state}
+        WHERE ID = #{TURNSTILE.id} AND TENANT_ID = #{TURNSTILE.tenantId}
+    </update>
+
+    <delete id="delete" parameterType="turnstile">
+        DELETE FROM TURNSTILES
+        WHERE ID = #{TURNSTILE.id} AND TENANT_ID = #{TURNSTILE.tenantId}
+    </delete>
+
+    <select id="readById" parameterType="turnstile" resultMap="turnstile">
+        SELECT ID, TENANT_ID, TENANT_DESCRIPTION, LOCATION_LATITUDE, LOCATION_LONGITUDE, STATE
+        FROM TURNSTILES
+        WHERE ID = #{TURNSTILE.id} AND TENANT_ID = #{TURNSTILE.tenantId}
+    </select>
+
+    <select id="readAll" resultMap="turnstile">
+        SELECT ID, TENANT_ID, TENANT_DESCRIPTION, LOCATION_LATITUDE, LOCATION_LONGITUDE, STATE
+        FROM TURNSTILES
+    </select>
+</mapper>

@@ -13,6 +13,8 @@ public abstract class AbstractMybatisConfig {
 
     public abstract DataSource getDatasource();
     public abstract String getMapperLocations();
+    public abstract String getTypeAliasesPackage();
+
     public abstract SqlSessionFactory sqlSessionFactory() throws Exception;
 
     protected SqlSessionFactory createSqlSessionFactory() throws Exception {
@@ -20,7 +22,7 @@ public abstract class AbstractMybatisConfig {
 
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(getDatasource());
-
+        sqlSessionFactoryBean.setTypeAliasesPackage(getTypeAliasesPackage());
         if (null != getMapperLocations()){
             try {
                 sqlSessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources(getMapperLocations()));

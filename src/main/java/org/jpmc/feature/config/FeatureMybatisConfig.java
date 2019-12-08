@@ -19,11 +19,14 @@ public class FeatureMybatisConfig extends AbstractMybatisConfig {
 
     private final DataSource dataSource;
     private final String mapperLocations;
+    private final String typeAliasPackage;
 
     public FeatureMybatisConfig(@Qualifier("db1DataSource") DataSource dataSource,
-                                @Value("${mappers.onboarding:classpath:**/feature/repository/*.xml}") String mapperLocations) {
+                                @Value("${mappers.feature:classpath:**/feature/repository/*.xml}") String mapperLocations,
+                                @Value("${typealiaspackage.feature:org.jpmc.feature}") String typeAliasPackage) {
         this.dataSource = dataSource;
         this.mapperLocations = mapperLocations;
+        this.typeAliasPackage = typeAliasPackage;
     }
 
     @Override
@@ -34,6 +37,11 @@ public class FeatureMybatisConfig extends AbstractMybatisConfig {
     @Override
     public String getMapperLocations() {
         return mapperLocations;
+    }
+
+    @Override
+    public String getTypeAliasesPackage() {
+        return typeAliasPackage;
     }
 
     @Bean("db1SqlSessionFactory")
